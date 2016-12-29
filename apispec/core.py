@@ -101,6 +101,7 @@ class APISpec(object):
         self.options = options
         # Metadata
         self._definitions = {}
+        self._security_definitions = {}
         self._parameters = {}
         self._tags = []
         self._paths = OrderedDict()
@@ -119,6 +120,7 @@ class APISpec(object):
             'swagger': OPENAPI_VERSION,
             'info': self.info,
             'definitions': self._definitions,
+            'securityDefinitions': self._security_definitions,
             'parameters': self._parameters,
             'paths': self._paths,
             'tags': self._tags
@@ -228,6 +230,22 @@ class APISpec(object):
         if description:
             ret['description'] = description
         self._definitions[name] = ret
+
+    def security_definition(self, name, properties=None):
+        """Add a new security_definition to the spec.
+
+        .. note::
+
+            If you are using `apispec.ext.marshmallow`, you can pass fields' metadata as
+            additional keyword arguments.
+
+            For example, to add ``enum`` to your field: ::
+
+                status = fields.String(required=True, enum=['open', 'closed'])
+
+        https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#security-definitions-object
+        """
+        self._security_definitions[name] = properties
 
     # PLUGIN INTERFACE
 
